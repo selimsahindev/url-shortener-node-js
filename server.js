@@ -8,21 +8,40 @@ const mongoose = require('mongoose');
 const ShortUrl = require('./models/shortUrl');
 const app = express();
 
-mongoose.connect('mongodb://localhost/urlShortener', {
+mongoose.connect(process.env.DATABASE_URL, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }))
 
-app.get('/', (req, res) => {
-  res.render('index');
+app.get('/', async (req, res) => {
+  const shortUrls = await ShortUrl.find();
+  res.render('index', { shortUrls: shortUrls });
+});
+
+app.get('/:shortUrl', async (req, res) => {
+  const shortUrl = await ShortUrl.findOne({ short: req.params.shortUrl });
+
+  // Send the 404 status code if the url does not exist.
+  if (shortUrl == null) {
+    res.sendStatus(404);
+  }
+
+  // Increment the number of clicks by one.
+  shortUrl.clicks++;
+  shortUrl.save();
+
+  res.redirect(shortUrl.full);
 });
 
 app.post('/shortUrls', async (req, res) => {
-  await ShortUrl.create({ full: req.body.fullUrl });
-
+  try {
+    await ShortUrl.create({ full: req.body.fullUrl });
+  } catch (e) {
+    console.error(e.message);
+  }
   res.redirect('/');
 });
 
