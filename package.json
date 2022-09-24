@@ -1,0 +1,29 @@
+{
+  "name": "url-shortener-node-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/selimsahindev/url-shortener-node-js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/selimsahindev/url-shortener-node-js/issues"
+  },
+  "homepage": "https://github.com/selimsahindev/url-shortener-node-js#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.1",
+    "shortid": "^2.2.16"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.2",
+    "nodemon": "^2.0.20"
+  }
+}
